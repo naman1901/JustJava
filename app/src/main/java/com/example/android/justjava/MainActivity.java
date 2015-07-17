@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -52,7 +53,22 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();
-        orderSummaryText.setText("Your order has been registered with us!\nOrder Cost: " + calculatePrice() + "\nThank You!");
+        String message = "Your order has been registered with us!\n\nToppings\n";
+        CheckBox whippedCream = (CheckBox) findViewById(R.id.whipped_cream_check_box);
+        CheckBox chocolate = (CheckBox) findViewById(R.id.chocolate_check_box);
+        boolean topping = false;
+        if(whippedCream.isChecked()) {
+            message += "\t- Whipped Cream\n";
+            topping = true;
+        }
+        if(chocolate.isChecked()) {
+            message += "\t- Chocolate\n";
+            topping = true;
+        }
+        if(!topping)
+            message += "\t- None\n";
+        message += "\nOrder Cost: " + calculatePrice() + "\n\nThank You!";
+        orderSummaryText.setText(message);
     }
 
     /**
