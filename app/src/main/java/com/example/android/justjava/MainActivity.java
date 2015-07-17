@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
@@ -31,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        createOrderSummary();
+        if(quantity == 0) {
+            Toast toast = Toast.makeText(getApplication(), "Quantity cannot be 0", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 100);
+            toast.show();
+        }
+        else
+            createOrderSummary();
     }
 
     /**
@@ -70,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(!topping)
             message += "\t- None\n";
-        message += "\nOrder Cost: " + calculatePrice() + "\n\nThank You!";
+        message += "\nOrder Cost: " + NumberFormat.getCurrencyInstance().format(calculatePrice()) + "\n\nThank You!";
         orderSummaryText.setText(message);
     }
 
@@ -88,7 +96,16 @@ public class MainActivity extends AppCompatActivity {
      */
 
     private int calculatePrice(){
-        return quantity*5;
+        int price = quantity *5;
+        CheckBox whippedCream = (CheckBox) findViewById(R.id.whipped_cream_check_box);
+        CheckBox chocolate = (CheckBox) findViewById(R.id.chocolate_check_box);
+        if(whippedCream.isChecked()) {
+            price += quantity;
+        }
+        if(chocolate.isChecked()) {
+           price += quantity *2;
+        }
+        return price;
     }
 
     private void displayPrice() {
@@ -122,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
     private String getName(){
         EditText name = (EditText) findViewById(R.id.name_edittext);
         return name.getText().toString();
+    }
+
+    /**
+     * This method works for the toppings checkboxes
+     */
+
+    public void checkToppings(View view) {
+        displayPrice();
     }
 
 }
