@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -53,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();
-        String message = "Your order has been registered with us!\n\nToppings\n";
+        String message = "Your order has been registered with us!\n\nName: ";
+        message += getName();
+        message+= "\n\nToppings\n";
         CheckBox whippedCream = (CheckBox) findViewById(R.id.whipped_cream_check_box);
         CheckBox chocolate = (CheckBox) findViewById(R.id.chocolate_check_box);
         boolean topping = false;
@@ -111,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
         else return;
         displayQuantity();
         displayPrice();
+    }
+
+    /**
+     * This method gets the name of the user
+     */
+    private String getName(){
+        EditText name = (EditText) findViewById(R.id.name_edittext);
+        return name.getText().toString();
     }
 
 }
