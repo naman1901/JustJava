@@ -1,7 +1,11 @@
 package com.example.android.justjava;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,6 +14,7 @@ import java.text.NumberFormat;
 /**
  * This app displays an order form to order coffee.
  */
+
 public class MainActivity extends AppCompatActivity {
 
     private int quantity = 0;
@@ -24,25 +29,52 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(quantity*5) + "\nYour order has been registered. Thank You!");
+        createOrderSummary();
+    }
+
+    /**
+     * This method creates the order summary.
+     */
+
+    private void createOrderSummary() {
+        final Context context = this;
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View orderSummary = layoutInflater.inflate(R.layout.order_summary, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(orderSummary);
+        TextView orderSummaryText = (TextView) orderSummary.findViewById(R.id.order_summary_textview);
+        alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertD = alertDialogBuilder.create();
+        alertD.show();
+        orderSummaryText.setText("Your order has been registered with us!\nOrder Cost: " + calculatePrice() + "\nThank You!");
     }
 
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void display(int number) {
+    private void displayQuantity() {
         TextView quantityTextView = (TextView) findViewById(
                 R.id.quantity_text_view);
-        quantityTextView.setText("" + number);
+        quantityTextView.setText("" + quantity);
     }
 
     /**
      * This method displays the given price on the screen.
      */
-    private void displayPrice(int number) {
+
+    private int calculatePrice(){
+        return quantity*5;
+    }
+
+    private void displayPrice() {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(5*number));
+        priceTextView.setText(NumberFormat.getCurrencyInstance().format(calculatePrice()));
     }
 
     /**
@@ -50,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void increment(View view) {
         quantity++;
-        display(quantity);
-        displayPrice(quantity);
+        displayQuantity();
+        displayPrice();
     }
 
     /**
@@ -61,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         if(quantity>0)
             quantity--;
         else return;
-        display(quantity);
-        displayPrice(quantity);
+        displayQuantity();
+        displayPrice();
     }
 
 }
