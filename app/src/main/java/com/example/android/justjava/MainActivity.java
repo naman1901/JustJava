@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         alertD.show();
         String message = "Your order has been registered with us!\n\nName: ";
         message += getName();
+        message += "\n\nQuantity: " + quantity;
         message+= "\n\nToppings\n";
         CheckBox whippedCream = (CheckBox) findViewById(R.id.whipped_cream_check_box);
         CheckBox chocolate = (CheckBox) findViewById(R.id.chocolate_check_box);
@@ -80,8 +81,25 @@ public class MainActivity extends AppCompatActivity {
             message += "\t- None\n";
         message += "\nOrder Cost: " + NumberFormat.getCurrencyInstance().format(calculatePrice()) + "\n\nThank You!";
         orderSummaryText.setText(message);
+        //orderSummaryText.setText(message + "\n\nA confirmation email has been sent to you!");
+        //sendEmailConfirmation(message);
     }
 
+    /**
+     * This method sends a confirmation email to the user.
+     */
+/*
+    private void sendEmailConfirmation(String message) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto"));
+        EditText orderName = (EditText) findViewById(R.id.name_edittext);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Order Confirmation for " + orderName.getText().toString());
+        emailIntent.putExtra(Intent.EXTRA_TEXT, message);
+        if (emailIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(emailIntent);
+        }
+    }
+*/
     /**
      * This method displays the given quantity value on the screen.
      */
